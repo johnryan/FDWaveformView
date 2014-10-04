@@ -38,4 +38,7 @@
 - (void)waveformDidBeginScrubbing:(FDWaveformView *)waveformView;
 - (void)waveformDidEndScrubbing:(FDWaveformView *)waveformView;
 
+
+- (void)waveformViewWillLoad:(FDWaveformView *)waveformView;
+- (void)waveformViewDidLoad:(FDWaveformView *)waveformView;
 @end
