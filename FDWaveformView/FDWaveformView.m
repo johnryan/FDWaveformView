@@ -138,7 +138,9 @@
                 [self setNeedsDisplay];
                 [self performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
                 break;
-                
+            case AVKeyValueStatusUnknown:
+            case AVKeyValueStatusLoading:
+                break;
             case AVKeyValueStatusFailed:
             case AVKeyValueStatusCancelled:
                 NSLog(@"FDWaveformView could not load asset: %@", error.localizedDescription);
