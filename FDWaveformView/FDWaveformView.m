@@ -248,43 +248,6 @@
                                        }];
 }
 
-- (void)plotLogGraph:(Float32 *) samples
-        maximumValue:(Float32) normalizeMax
-        mimimumValue:(Float32) normalizeMin
-         sampleCount:(NSInteger) sampleCount
-         imageHeight:(float) imageHeight
-                done:(void(^)(UIImage *image, UIImage *selectedImage))done
-{
-    // TODO: switch to a synchronous function that paints onto a given context? (for issue #2)
-    CGSize imageSize = CGSizeMake(sampleCount, imageHeight);
-    UIGraphicsBeginImageContext(imageSize);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetAlpha(context,1.0);
-    CGContextSetLineWidth(context, 1.0);
-    CGContextSetStrokeColorWithColor(context, [self.wavesColor CGColor]);
-    
-    float halfGraphHeight = (imageHeight / 2);
-    float centerLeft = halfGraphHeight;
-    float sampleAdjustmentFactor = imageHeight / (normalizeMax - noiseFloor) / 2;
-    
-    for (NSInteger intSample=0; intSample<sampleCount; intSample++) {
-        Float32 sample = *samples++;
-        float pixels = (sample - noiseFloor) * sampleAdjustmentFactor;
-        CGContextMoveToPoint(context, intSample, centerLeft-pixels);
-        CGContextAddLineToPoint(context, intSample, centerLeft+pixels);
-        CGContextStrokePath(context);
-    }
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    CGRect drawRect = CGRectMake(0, 0, image.size.width, image.size.height);
-    [self.progressColor set];
-    UIRectFillUsingBlendMode(drawRect, kCGBlendModeSourceAtop);
-    UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    done(image, tintedImage);
-}
-
-
 + (void)sliceAndDownsampleAsset:(AVAsset *)songAsset
                           track:(AVAssetTrack *)songTrack
                    startSamples:(unsigned long int)start
